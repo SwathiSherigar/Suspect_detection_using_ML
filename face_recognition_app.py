@@ -50,9 +50,10 @@ def search_faces_in_video(video_path, known_face_encodings, known_face_names):
         ret, frame = video_capture.read()
         if not ret:
             break  # End of video
+        denoised_frame = cv2.fastNlMeansDenoisingColored(frame, None, 10, 10, 7, 21)
         
         # Convert to RGB
-        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        rgb_frame = cv2.cvtColor(denoised_frame, cv2.COLOR_BGR2RGB)
 
         # Detect faces in the current frame
         faces_in_frame = detector.detect_faces(rgb_frame)
@@ -88,7 +89,7 @@ def search_faces_in_video(video_path, known_face_encodings, known_face_names):
     video_capture.release()
 
 # Streamlit application
-st.title("🔍 Real-time Face Detection and Recognition")
+st.title("🔍 Suspect Image Retrieval using Face Recognition through CCTV Footage")
 
 # Set custom background color and image
 st.markdown("""
